@@ -1,0 +1,85 @@
+<div class="app-container">
+  <div class="background-gradient">
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+      <div class="shape shape-5"></div>
+    </div>
+  </div>
+  <div class="content-wrapper">
+    <header class="app-header">
+      <div class="header-content">
+        <h1 class="app-title">
+          <span class="title-icon">✨</span>
+          <span class="title-text">TodoFlow</span>
+          <span class="title-accent">Pro</span>
+        </h1>
+        <p class="app-subtitle">
+          <span class="subtitle-icon">🚀</span>
+          Organize • Prioritize • Achieve with Style
+        </p>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <div class="main-content">
+        <div class="section-container">
+          <app-todo-form (createTodo)="onCreateTodo($event)"></app-todo-form>
+        </div>
+
+        <div class="section-container">
+          <app-todo-filter
+            [activeFilter]="currentFilter"
+            [totalCount]="(allTodos$ | async)?.length || 0"
+            [completedCount]="(completedTodos$ | async)?.length || 0"
+            (filterChange)="onFilterChange($event)"
+            (clearCompleted)="onClearCompleted()"
+          >
+          </app-todo-filter>
+        </div>
+
+        <div class="todos-container">
+          <div
+            *ngIf="(filteredTodos$ | async)?.length === 0"
+            class="empty-state"
+          >
+            <div class="empty-animation">
+              <div class="empty-icon">�</div>
+              <div class="empty-sparkles">
+                <span class="sparkle sparkle-1">✨</span>
+                <span class="sparkle sparkle-2">⭐</span>
+                <span class="sparkle sparkle-3">💫</span>
+              </div>
+            </div>
+            <h3 class="empty-title">{{ getEmptyStateTitle() }}</h3>
+            <p class="empty-description">{{ getEmptyStateDescription() }}</p>
+            <div class="empty-cta">
+              <span class="cta-text"
+                >Start your productivity journey today!</span
+              >
+            </div>
+          </div>
+
+          <div class="todos-list">
+            <app-todo-item
+              *ngFor="
+                let todo of filteredTodos$ | async;
+                trackBy: trackByTodoId;
+                let i = index
+              "
+              [todo]="todo"
+              [style.animation-delay]="i * 0.1 + 's'"
+              class="todo-item-animated"
+              (toggle)="onToggleTodo($event)"
+              (delete)="onDeleteTodo($event)"
+              (update)="onUpdateTodo($event)"
+            >
+            </app-todo-item>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

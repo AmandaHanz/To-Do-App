@@ -1,0 +1,136 @@
+<div
+  class="todo-item"
+  [@fadeSlide]
+  [class.completed]="todo.completed"
+  [class]="'priority-' + todo.priority"
+>
+  <div class="priority-indicator"></div>
+  <div class="todo-header">
+    <div class="checkbox-container">
+      <input
+        type="checkbox"
+        [checked]="todo.completed"
+        (change)="onToggle()"
+        class="todo-checkbox"
+        [id]="'todo-' + todo.id"
+      />
+      <label [for]="'todo-' + todo.id" class="checkbox-label">
+        <span class="checkmark">
+          <svg width="12" height="12" viewBox="0 0 12 12">
+            <path
+              d="M2 6L5 9L10 3"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="none"
+            />
+          </svg>
+        </span>
+      </label>
+    </div>
+
+    <div class="todo-metadata">
+      <div class="category-badge" [style.background-color]="getCategoryColor()">
+        <span class="badge-icon">🏷️</span>
+        <span class="category-text">{{ getCategoryLabel() }}</span>
+      </div>
+      <div class="priority-badge" [class]="'priority-' + todo.priority">
+        <span class="priority-icon">
+          <span *ngIf="todo.priority === 'urgent'">🔥</span>
+          <span *ngIf="todo.priority === 'high'">⚡</span>
+          <span *ngIf="todo.priority === 'medium'">⚠️</span>
+          <span *ngIf="todo.priority === 'low'">🟢</span>
+        </span>
+        <span class="priority-text">{{ todo.priority }}</span>
+      </div>
+    </div>
+
+    <div class="todo-actions">
+      <button
+        *ngIf="!isEditing"
+        (click)="startEdit()"
+        class="action-btn edit-btn"
+        title="Edit todo"
+      >
+        <span class="btn-icon">✏️</span>
+        <span class="btn-text">Edit</span>
+      </button>
+      <button
+        *ngIf="isEditing"
+        (click)="onEditComplete()"
+        class="action-btn save-btn"
+        title="Save changes"
+      >
+        <span class="btn-icon">✅</span>
+        <span class="btn-text">Save</span>
+      </button>
+      <button
+        *ngIf="isEditing"
+        (click)="onEditCancel()"
+        class="action-btn cancel-btn"
+        title="Cancel editing"
+      >
+        <span class="btn-icon">❌</span>
+        <span class="btn-text">Cancel</span>
+      </button>
+      <button
+        *ngIf="!isEditing"
+        (click)="onDelete()"
+        class="action-btn delete-btn"
+        title="Delete todo"
+      >
+        <span class="btn-icon">🗑️</span>
+        <span class="btn-text">Delete</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="todo-content">
+    <div class="todo-text" *ngIf="!isEditing">
+      <h3 class="todo-title" [class.completed-text]="todo.completed">
+        {{ todo.title }}
+      </h3>
+      <p class="todo-description" *ngIf="todo.description">
+        {{ todo.description }}
+      </p>
+
+      <!-- Due Date Display -->
+      <div
+        class="todo-due-date"
+        *ngIf="todo.dueDate"
+        [class]="getDueDateClass()"
+      >
+        <span class="due-date-icon">📅</span>
+        <span class="due-date-text">{{ formatDueDate() }}</span>
+      </div>
+    </div>
+
+    <div class="todo-edit" *ngIf="isEditing">
+      <div class="edit-field">
+        <input
+          type="text"
+          [(ngModel)]="editTitle"
+          class="edit-input title-input"
+          placeholder="Todo title..."
+          #titleInput
+        />
+      </div>
+      <div class="edit-field">
+        <textarea
+          [(ngModel)]="editDescription"
+          class="edit-input description-input"
+          placeholder="Description..."
+        ></textarea>
+      </div>
+
+      <!-- Due Date Edit Field -->
+      <div class="edit-field">
+        <input
+          type="datetime-local"
+          [(ngModel)]="editDueDateString"
+          class="edit-input date-input"
+          [min]="minDate"
+        />
+      </div>
+    </div>
+  </div>
+</div>

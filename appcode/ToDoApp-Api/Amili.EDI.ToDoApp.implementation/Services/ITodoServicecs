@@ -1,0 +1,14 @@
+using ToDoApp.Models;
+
+namespace TodoApp.Services
+{
+    public interface TodoServiceInterface
+    {
+        Task<List<Todo>> GetTodosAsync();
+        Task<Todo?> CreateTodoAsync(CreateTodoReq request);
+        Task<Todo?> UpdateTodoAsync(UpdateTodoReq request);
+        Task<Todo?> ToggleTodo(int id);
+        Task<bool> DeleteTodo(int id);
+        Task<bool> ClearCompleted();
+    }
+}

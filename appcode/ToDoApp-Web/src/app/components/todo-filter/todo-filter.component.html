@@ -1,0 +1,56 @@
+<div class="filter-container">
+  <div class="filter-section">
+    <div class="filter-buttons">
+      <button
+        *ngFor="let filter of filters"
+        (click)="onFilterChange(filter.value)"
+        [class.active]="activeFilter === filter.value"
+        class="filter-btn"
+      >
+        {{ filter.label }}
+      </button>
+    </div>
+  </div>
+
+  <div class="stats-section">
+    <div class="todo-stats">
+      <!-- Mini Bar Charts -->
+      <div class="mini-charts">
+        <div class="chart-item">
+          <div class="chart-label">Active</div>
+          <div class="chart-bar">
+            <div
+              class="chart-fill active-fill"
+              [style.width.%]="getActivePercentage()"
+            ></div>
+          </div>
+          <div class="chart-value">{{ totalCount - completedCount }}</div>
+        </div>
+        <div class="chart-item">
+          <div class="chart-label">Done</div>
+          <div class="chart-bar">
+            <div
+              class="chart-fill completed-fill"
+              [style.width.%]="getCompletedPercentage()"
+            ></div>
+          </div>
+          <div class="chart-value">{{ completedCount }}</div>
+        </div>
+      </div>
+
+      <!-- Stats Text -->
+      <div class="stats-text">
+        <span class="stat-item">
+          <strong>{{ totalCount }}</strong> tasks
+        </span>
+        <button
+          *ngIf="completedCount > 0"
+          (click)="clearCompleted.emit()"
+          class="clear-btn"
+        >
+          Clear completed
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

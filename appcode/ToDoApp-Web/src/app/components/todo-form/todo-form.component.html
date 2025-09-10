@@ -1,0 +1,98 @@
+<div class="todo-form-container">
+  <div class="form-header">
+    <h2 class="form-title">
+      <span class="form-icon">📝</span>
+      Create New Todo
+    </h2>
+    <p class="form-subtitle">Add your task with style and precision</p>
+  </div>
+
+  <form (ngSubmit)="onSubmit()" class="todo-form">
+    <div class="form-grid">
+      <!-- Main Inputs -->
+      <div class="input-group main-inputs">
+        <div class="floating-label-container">
+          <input
+            type="text"
+            [(ngModel)]="title"
+            name="title"
+            placeholder=" "
+            class="title-input floating-input"
+            required
+          />
+          <label class="floating-label">✨ Todo Title</label>
+        </div>
+        <div class="floating-label-container">
+          <textarea
+            [(ngModel)]="description"
+            name="description"
+            placeholder=" "
+            class="description-input floating-input"
+            rows="3"
+          ></textarea>
+          <label class="floating-label">📄 Description (Optional)</label>
+        </div>
+      </div>
+
+      <!-- Metadata Inputs -->
+      <div class="input-group metadata-inputs">
+        <div class="input-row">
+          <!-- Category Select -->
+          <div class="select-group">
+            <label class="input-label">🏷️ Category</label>
+            <select
+              [(ngModel)]="category"
+              name="category"
+              class="select-input modern-select"
+            >
+              <option *ngFor="let cat of categories" [value]="cat.value">
+                {{ cat.icon }} {{ cat.label }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Priority Select -->
+          <div class="select-group">
+            <label class="input-label">🎯 Priority</label>
+            <select
+              [(ngModel)]="priority"
+              name="priority"
+              class="select-input priority-select modern-select"
+              [class]="'priority-' + priority"
+            >
+              <option *ngFor="let pri of priorities" [value]="pri.value">
+                {{ pri.icon }} {{ pri.label }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Due Date -->
+        <div class="input-row">
+          <div class="date-group">
+            <label class="input-label">📅 Due Date</label>
+            <input
+              type="datetime-local"
+              [(ngModel)]="dueDateString"
+              name="dueDate"
+              class="date-input modern-input"
+              [min]="minDate"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      [disabled]="!title.trim()"
+      class="submit-btn modern-btn"
+      [class]="'priority-' + priority"
+    >
+      <span class="btn-icon">🚀</span>
+      <span class="btn-text">Create Todo</span>
+      <span class="btn-effect"></span>
+    </button>
+  </form>
+</div>
